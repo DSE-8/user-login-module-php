@@ -39,4 +39,16 @@ final class UserLoginServiceTest extends TestCase
         $this->assertEquals($user,$response[0]);
 
     }
+    /**
+     * @test
+     */
+    public function obtaisExternalSessionsCount()
+    {
+        $userLoginService = new UserLoginService();
+
+        $response = $userLoginService->getExternalSessions();
+        
+        $this->assertIsInt($response);
+
+    }
 }

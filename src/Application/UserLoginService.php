@@ -4,6 +4,7 @@ namespace UserLoginService\Application;
 
 use Exception;
 use UserLoginService\Domain\User;
+use UserLoginService\Infrastructure\FacebookSessionManager;
 
 class UserLoginService
 {
@@ -19,6 +20,11 @@ class UserLoginService
 
     public function getLoggedUsers(){
         return $this->loggedUsers;
+    } 
+
+    public function getExternalSessions(): int{
+        $sessionManager = new FacebookSessionManager();
+        return $sessionManager->getSessions();
     } 
 
 }
