@@ -10,33 +10,36 @@ use UserLoginService\Domain\User;
 
 final class UserLoginServiceTest extends TestCase
 {
+    private UserLoginService $userLoginService;
+    protected function setUp(): void{
+        parent::setup();
+        $this->userLoginService = new UserLoginService();
+    } 
     /**
      * @test
      */
-    public function userDiegoIsLoggedIn()
+    public function userDiegoIsAlreadyLoggedIn()
     {
-        $userLoginService = new UserLoginService();
         $user = new User("Diego");
 
         $this->expectExceptionMessage("User already logged in");
 
-        $userLoginService->manualLogin($user);
-        $userLoginService->manualLogin($user);
+        $this->userLoginService->manualLogin($user);
+        $this->userLoginService->manualLogin($user);
 
     }
     /**
      * @test
      */
-    public function userIsLoggedIn()
+    public function userDiegoIsLoggedIn()
     {
-        $userLoginService = new UserLoginService();
         $user = new User("Diego");
 
-        $userLoginService->manualLogin($user);
+        $this->userLoginService->manualLogin($user);
 
-        $response = $userLoginService->getLoggedUsers();
+        $response = $this->userLoginService->getLoggedUsers();
         
-        $this->assertEquals($user,$response[0]);
+        $this->assertContainsEquals($user,$response);
 
     }
     /**
@@ -44,9 +47,8 @@ final class UserLoginServiceTest extends TestCase
      */
     public function obtaisExternalSessionsCount()
     {
-        $userLoginService = new UserLoginService();
 
-        $response = $userLoginService->getExternalSessions();
+        $response = $this->userLoginService->getExternalSessions();
         
         $this->assertIsInt($response);
 
