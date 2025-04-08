@@ -37,4 +37,7 @@ class UserLoginService
         return "User not found";
     }
 
+    function login(): string{
+        return "Login incorrecto";
+    } 
 }
