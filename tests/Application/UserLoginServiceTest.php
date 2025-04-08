@@ -63,6 +63,8 @@ final class UserLoginServiceTest extends TestCase
      */
     public function userNotLoggedInLogsoutAndReturnsUserNotFound()
     {
+        $sessionManagerDouble = Mockery::mock(SessionManager::class);
+        $sessionManagerDouble->allows()->logout($this->user->getUserName())->andReturn(0);
 
         $response = $this->userLoginService->logout($this->user);
         
@@ -74,6 +76,9 @@ final class UserLoginServiceTest extends TestCase
      */
     public function userLoggedInLogsoutAndReturnsOk()
     {
+        $sessionManagerDouble = Mockery::mock(SessionManager::class);
+        $sessionManagerDouble->allows()->logout($this->user->getUserName())->andReturn(1);
+
         $this->userLoginService->manualLogin($this->user);
         $response = $this->userLoginService->logout($this->user);
         
@@ -84,9 +89,27 @@ final class UserLoginServiceTest extends TestCase
      */
     public function userAlreadyLoggedInLogsinAndReturnsLoginIncorrecto()
     { 
+        $sessionManagerDouble = Mockery::mock(SessionManager::class);
+        $sessionManagerDouble->allows('login')->andReturn(0);
+
         $response = $this->userLoginService->login();
         
         $this->assertEquals("Login incorrecto",$response);
+
+    }
+    /**
+     * @test
+     */
+    public function userNotAlreadyLoggedInLogsinAndReturnsLoginCorrecto()
+    { 
+        $sessionManagerDouble = Mockery::mock(SessionManager::class);
+        $sessionManagerDouble->allows('login')->andReturn(1);
+        $userName = "Diego";
+        $password = "1234";
+
+        $response = $this->userLoginService->login($userName,$password);
+        
+        $this->assertEquals("Login correcto",$response);
 
     }
 }

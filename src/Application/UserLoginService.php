@@ -31,13 +31,16 @@ class UserLoginService
     }
 
     public function logout(User $user): string{
-        if(in_array($user,$this->loggedUsers)){
+        if($this->sessionManager->logout($user->getUserName())){
             return "Ok";
         } 
         return "User not found";
     }
 
-    function login(): string{
-        return "Login incorrecto";
+    public function login(string $userName, string $password): string{
+        if($this->sessionManager->login($userName,$password)){
+            return "Login correcto";
+        } 
+        return "Ok";
     } 
 }
