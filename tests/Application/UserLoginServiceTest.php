@@ -78,12 +78,11 @@ final class UserLoginServiceTest extends TestCase
         $response = $this->userLoginService->logout($this->user);
         
         $this->assertEquals("Ok",$response);
-
     }
     /**
      * @test
      */
-    public function userLoggedInLogsoutDeletesIt()
+    public function userAlreadyLoggedInLogsinAndReturnsLoginIncorrecto()
     { 
         $response = $this->userLoginService->login();
         
