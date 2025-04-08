@@ -28,6 +28,10 @@ class UserLoginService
 
     public function getExternalSessions(): int{
         return $this->sessionManager->getSessions();
-    } 
+    }
+
+    public function logout(User $user): string{
+        return "User not found";
+    }
 
 }
