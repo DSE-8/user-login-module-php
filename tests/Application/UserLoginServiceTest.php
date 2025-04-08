@@ -12,9 +12,11 @@ use Mockery;
 
 final class UserLoginServiceTest extends TestCase
 {
+    private User $user;
     private UserLoginService $userLoginService;
     protected function setUp(): void{
         parent::setup();
+        $this->user = new User("Diego");
         $sessionManagerDouble = Mockery::mock(SessionManager::class);
         $this->userLoginService = new UserLoginService($sessionManagerDouble);
     } 
@@ -23,12 +25,11 @@ final class UserLoginServiceTest extends TestCase
      */
     public function userDiegoIsAlreadyLoggedIn()
     {
-        $user = new User("Diego");
 
         $this->expectExceptionMessage("User already logged in");
 
-        $this->userLoginService->manualLogin($user);
-        $this->userLoginService->manualLogin($user);
+        $this->userLoginService->manualLogin($this->user);
+        $this->userLoginService->manualLogin($this->user);
 
     }
     /**
@@ -36,12 +37,11 @@ final class UserLoginServiceTest extends TestCase
      */
     public function userDiegoIsLoggedIn()
     {
-        $user = new User("Diego");
-        $this->userLoginService->manualLogin($user);
+        $this->userLoginService->manualLogin($this->user);
 
         $response = $this->userLoginService->getLoggedUsers();
         
-        $this->assertContainsEquals($user,$response);
+        $this->assertContainsEquals($this->user,$response);
 
     }
     /**
@@ -63,9 +63,8 @@ final class UserLoginServiceTest extends TestCase
      */
     public function userNotLoggedInLogsoutAndReturnsUserNotFoundString()
     {
-        $user = new User("Diego");
 
-        $response = $this->userLoginService->logout($user);
+        $response = $this->userLoginService->logout($this->user);
         
         $this->assertEquals("User not found",$response);
 
