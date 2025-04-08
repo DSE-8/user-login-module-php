@@ -61,7 +61,7 @@ final class UserLoginServiceTest extends TestCase
     /**
      * @test
      */
-    public function userNotLoggedInLogsoutAndReturnsUserNotFoundString()
+    public function userNotLoggedInLogsoutAndReturnsUserNotFound()
     {
 
         $response = $this->userLoginService->logout($this->user);
@@ -72,7 +72,7 @@ final class UserLoginServiceTest extends TestCase
     /**
      * @test
      */
-    public function userLoggedInLogsoutAndReturnsOkString()
+    public function userLoggedInLogsoutAndReturnsOk()
     {
         $this->userLoginService->manualLogin($this->user);
         $response = $this->userLoginService->logout($this->user);
