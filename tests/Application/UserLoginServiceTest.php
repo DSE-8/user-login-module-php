@@ -69,4 +69,15 @@ final class UserLoginServiceTest extends TestCase
         $this->assertEquals("User not found",$response);
 
     }
+    /**
+     * @test
+     */
+    public function userLoggedInLogsoutAndReturnsOkString()
+    {
+        $this->userLoginService->manualLogin($this->user);
+        $response = $this->userLoginService->logout($this->user);
+        
+        $this->assertEquals("Ok",$response);
+
+    }
 }

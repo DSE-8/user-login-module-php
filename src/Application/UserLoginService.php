@@ -31,6 +31,9 @@ class UserLoginService
     }
 
     public function logout(User $user): string{
+        if(in_array($user,$this->loggedUsers)){
+            return "Ok";
+        } 
         return "User not found";
     }
 
