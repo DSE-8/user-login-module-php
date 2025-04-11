@@ -41,6 +41,6 @@ class UserLoginService
         if($this->sessionManager->login($userName,$password)){
             return "Login correcto";
         } 
-        return "Ok";
+        return "Login incorrecto";
     } 
 }

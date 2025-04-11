@@ -65,6 +65,7 @@ final class UserLoginServiceTest extends TestCase
     {
         $sessionManagerDouble = Mockery::mock(SessionManager::class);
         $sessionManagerDouble->allows()->logout($this->user->getUserName())->andReturn(0);
+        $this->userLoginService = new UserLoginService($sessionManagerDouble);
 
         $response = $this->userLoginService->logout($this->user);
         
@@ -78,6 +79,7 @@ final class UserLoginServiceTest extends TestCase
     {
         $sessionManagerDouble = Mockery::mock(SessionManager::class);
         $sessionManagerDouble->allows()->logout($this->user->getUserName())->andReturn(1);
+        $this->userLoginService = new UserLoginService($sessionManagerDouble);
 
         $this->userLoginService->manualLogin($this->user);
         $response = $this->userLoginService->logout($this->user);
@@ -90,9 +92,12 @@ final class UserLoginServiceTest extends TestCase
     public function userAlreadyLoggedInLogsinAndReturnsLoginIncorrecto()
     { 
         $sessionManagerDouble = Mockery::mock(SessionManager::class);
-        $sessionManagerDouble->allows('login')->andReturn(0);
+        $userName = "Diego";
+        $password = "1234";
+        $sessionManagerDouble->shouldReceive('login')->with($userName,$password)->andReturn(0);
+        $this->userLoginService = new UserLoginService($sessionManagerDouble);
 
-        $response = $this->userLoginService->login();
+        $response = $this->userLoginService->login($userName,$password);
         
         $this->assertEquals("Login incorrecto",$response);
 
@@ -103,9 +108,10 @@ final class UserLoginServiceTest extends TestCase
     public function userNotAlreadyLoggedInLogsinAndReturnsLoginCorrecto()
     { 
         $sessionManagerDouble = Mockery::mock(SessionManager::class);
-        $sessionManagerDouble->allows('login')->andReturn(1);
         $userName = "Diego";
         $password = "1234";
+        $sessionManagerDouble->shouldReceive('login')->with($userName,$password)->andReturn(1);
+        $this->userLoginService = new UserLoginService($sessionManagerDouble);
 
         $response = $this->userLoginService->login($userName,$password);
         
